@@ -1,24 +1,45 @@
+const { createArticle } = require("../controllers/article.controller");
 const Article = require("../models/article.model");
 
 const router = require("express").Router();
 
-router.get("/", (req, res) => {
-  res.send("Article route is working");
-});
+// Create Article
+router.post("/", createArticle);
 
-router.post("/", async (req, res) => {
+// Get All Articles
+router.get("/", async (req, res) => {
   try {
-    const newArticle = new Article({
-      title: req.body.title,
-      content: req.body.content,
-      image: "https://example.com/image.jpg",
-    });
-
-    await newArticle.save();
-    res.status(201).json({ message: "Article created", article: newArticle });
+    const articles = await Article.find().sort({ createdAt: -1 });
+    res
+      .status(200)
+      .json({ message: "Articles fetched successfully", data: articles });
   } catch (error) {
-    console.log("[CREATE ARTICLE ERROR]", error);
+    console.log("[GET ALL ARTICLES ERROR]", error);
+    res
+      .status(500)
+      .json({ message: "Error occurred fetching articles, try again later!" });
   }
 });
+
+// Get One Article By Id
+
+router.get("/:id", async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    res.status(200).json({
+      message: "Article has been fetched successfully",
+      data: article,
+    });
+  } catch (error) {
+    console.log("[GET ARTICLE BY ID ERROR]", error);
+    res
+      .status(500)
+      .json({ message: "Error occurred fetching article, try again later!" });
+  }
+});
+
+// Update An Article
+
+// Delete An Article
 
 module.exports = router;
