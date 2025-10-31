@@ -4,7 +4,7 @@ dotenv.config();
 
 const { dbConnect } = require("./core/db");
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8081;
 
 const articleRoutes = require("./routes/article.routes");
 
