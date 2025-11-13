@@ -1,5 +1,5 @@
 import logoImage from "../assets/images/CORPLAND5.png"
-import "../styles/components/Logo.css"
+import "../styles/components/logo.css"
 
 const Logo = () => {
   return (
